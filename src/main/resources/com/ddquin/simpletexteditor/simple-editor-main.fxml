@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.ddquin.simpletexteditor.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TextArea?>
+<?import java.net.URL?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddquin.simpletexteditor.SimpleEditorMain" >
+        <MenuBar fx:id="menuBar"   />
+        <TextArea fx:id="textArea"  VBox.vgrow="ALWAYS" />
+        <stylesheets>
+                <URL value="@editor.css" />
+        </stylesheets>
+</VBox>

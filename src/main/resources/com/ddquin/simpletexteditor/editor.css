@@ -1,0 +1,6 @@
+/* Text Area */
+#textArea {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-font-family: "Roboto Light";
+}
