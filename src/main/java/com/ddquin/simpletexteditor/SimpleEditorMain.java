@@ -1,6 +1,7 @@
 package com.ddquin.simpletexteditor;
 
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Menu;
@@ -14,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -31,6 +33,9 @@ public class SimpleEditorMain {
 
     @FXML
     private TextArea textArea;
+
+    @FXML
+    private Text lineCount;
 
     @FXML
     private MenuBar menuBar;
@@ -66,6 +71,12 @@ public class SimpleEditorMain {
                 changeFontSize(textArea.getFont().getSize() - 2);
             }
         });
+        textArea.setOnKeyTyped( event -> {
+            updateLineCount();
+        });
+        textArea.setOnMouseClicked( event -> {
+            updateLineCount();
+        });
     }
 
 
@@ -76,6 +87,12 @@ public class SimpleEditorMain {
         String content = Files.readString(fileOpen.toPath(), StandardCharsets.US_ASCII);
         textArea.setText(content);
     }
+
+    private void updateLineCount() {
+
+        lineCount.setText(" Lines: " + textArea.getText().split("\n").length);
+    }
+
 
     private void changeFontSize(double newFontSize) {
         if (newFontSize < 10 || newFontSize > 40) return;

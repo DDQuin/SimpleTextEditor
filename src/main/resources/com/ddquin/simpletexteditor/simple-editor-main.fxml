@@ -6,9 +6,13 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.TextArea?>
 <?import java.net.URL?>
+<?import javafx.scene.text.Text?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddquin.simpletexteditor.SimpleEditorMain" >
         <MenuBar fx:id="menuBar"   />
         <TextArea fx:id="textArea"  VBox.vgrow="ALWAYS" />
+        <HBox fx:id="bottomBar">
+                <Text fx:id="lineCount"></Text>
+        </HBox>
         <stylesheets>
                 <URL value="@editor.css" />
         </stylesheets>
