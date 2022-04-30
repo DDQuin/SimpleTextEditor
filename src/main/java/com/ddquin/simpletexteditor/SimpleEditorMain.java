@@ -90,7 +90,7 @@ public class SimpleEditorMain {
 
     private void updateLineCount() {
 
-        lineCount.setText(" Lines: " + textArea.getText().split("\n").length);
+        lineCount.setText(" Lines: " + textArea.getText().lines().count());
     }
 
 
