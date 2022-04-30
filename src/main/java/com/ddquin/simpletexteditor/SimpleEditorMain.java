@@ -58,8 +58,8 @@ public class SimpleEditorMain {
 
     private void setTextArea() {
         textArea.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
-            KeyCombination increaseCombo = new KeyCharacterCombination("+", KeyCombination.CONTROL_DOWN);
-            KeyCombination decreaseCombo = new KeyCharacterCombination("-", KeyCombination.CONTROL_DOWN);
+            KeyCombination increaseCombo = new KeyCharacterCombination("=", KeyCombination.SHORTCUT_DOWN);
+            KeyCombination decreaseCombo = new KeyCharacterCombination("-", KeyCombination.SHORTCUT_DOWN);
             if (increaseCombo.match(keyEvent)) {
                 changeFontSize(textArea.getFont().getSize() + 2);
             } else if (decreaseCombo.match(keyEvent)) {
