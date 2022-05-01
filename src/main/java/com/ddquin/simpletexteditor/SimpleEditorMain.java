@@ -1,6 +1,8 @@
 package com.ddquin.simpletexteditor;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCharacterCombination;
@@ -21,14 +23,16 @@ import java.util.TimerTask;
 public class SimpleEditorMain {
 
     private File fileOpen;
-
-    @FXML
-    private MenuBar menuBar;
-
     private double screenWidth;
     private double screenHeight;
     private boolean isSaved;
 
+    //Menu
+    @FXML
+    private MenuBar menuBar;
+
+    @FXML
+    private CheckMenuItem darkMenu;
 
 
     @FXML
@@ -48,16 +52,18 @@ public class SimpleEditorMain {
     private Timer timeToCloseHint;
 
 
-
     @FXML
     public void initialize() {
         timeToCloseHint = new Timer();
+        Platform.runLater(() -> menuBar.getScene().getWindow().setOnCloseRequest(e -> {
+            if (timeToCloseHint != null) timeToCloseHint.cancel();
+        }));
+
         setUpMenus();
         setUpTextArea();
     }
 
     private void setUpMenus() {
-
     }
 
     private void setUpTextArea() {
@@ -127,6 +133,15 @@ public class SimpleEditorMain {
         textArea.setText("");
     }
 
+    @FXML
+    public void setDarkMode() {
+        if (darkMenu.isSelected()) {
+            menuBar.getScene().getStylesheets().add("dark-mode.css");
+        } else {
+            menuBar.getScene().getStylesheets().remove("dark-mode.css");
+        }
+    }
+
     private void updateBottomBar() {
         lineCount.setText(" Lines: " + textArea.getText().lines().count());
         if (fileOpen != null && !isSaved) {
@@ -148,9 +163,6 @@ public class SimpleEditorMain {
     }
 
     private void showHintText(String text) {
-        menuBar.getScene().getWindow().setOnCloseRequest(e -> {
-            if (timeToCloseHint != null) timeToCloseHint.cancel();
-        });
         hintText.setText(text);
         TimerTask closeHint = new TimerTask() {
             @Override
