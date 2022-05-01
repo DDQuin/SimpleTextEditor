@@ -20,7 +20,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -38,30 +40,26 @@ public class SimpleEditorMain {
     private Text lineCount;
 
     @FXML
+    private Text hintText;
+
+    @FXML
+    private Text fileText;
+
+    @FXML
     private MenuBar menuBar;
 
 
     @FXML
     public void initialize() {
-        setMenus();
-        setTextArea();
+        setUpMenus();
+        setUpTextArea();
     }
 
-    private void setMenus() {
-        Menu file = new Menu("File");
-        MenuItem openMenuItem = new MenuItem("Open");
-        openMenuItem.setOnAction(e -> {
-            try {
-                chooseFile();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-        file.getItems().add(openMenuItem);
-        menuBar.getMenus().add(file);
+    private void setUpMenus() {
+
     }
 
-    private void setTextArea() {
+    private void setUpTextArea() {
         textArea.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
             KeyCombination increaseCombo = new KeyCharacterCombination("=", KeyCombination.SHORTCUT_DOWN);
             KeyCombination decreaseCombo = new KeyCharacterCombination("-", KeyCombination.SHORTCUT_DOWN);
@@ -71,32 +69,75 @@ public class SimpleEditorMain {
                 changeFontSize(textArea.getFont().getSize() - 2);
             }
         });
-        textArea.setOnKeyTyped( event -> {
-            updateLineCount();
-        });
-        textArea.setOnMouseClicked( event -> {
-            updateLineCount();
-        });
+        textArea.setOnKeyTyped( event -> updateLineCount());
+        textArea.setOnMouseClicked( event -> updateLineCount());
+        updateLineCount();
     }
 
 
 
-    public void chooseFile() throws IOException {
+    @FXML
+    public void chooseFile()  {
         FileChooser fileChooser = new FileChooser();
-        fileOpen = fileChooser.showOpenDialog((Stage) menuBar.getScene().getWindow());
-        String content = Files.readString(fileOpen.toPath(), StandardCharsets.US_ASCII);
-        textArea.setText(content);
+        fileOpen = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
+        // if no file chosen (user quit dialog)
+        if (fileOpen == null) return;
+        String content;
+        try {
+            content = Files.readString(fileOpen.toPath(), StandardCharsets.US_ASCII);
+            hintText.setText("Opened " + fileOpen.getName());
+            changeTitle(fileOpen.getName());
+            textArea.setText(content);
+            updateLineCount();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @FXML
+    public void saveFile() {
+        if (fileOpen == null) {
+            hintText.setText("No file open!");
+            return;
+        }
+        try (PrintWriter out = new PrintWriter(fileOpen)) {
+            out.println(textArea.getText());
+            hintText.setText("Saved " + fileOpen.getName());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void closeFile() {
+        if (fileOpen == null) {
+            hintText.setText("No file open!");
+            return;
+        }
+        hintText.setText("Closed " + fileOpen.getName());
+        fileOpen = null;
+        changeTitle("");
+        textArea.setText("");
+        updateLineCount();
     }
 
     private void updateLineCount() {
-
         lineCount.setText(" Lines: " + textArea.getText().lines().count());
+    }
+
+    private void changeTitle(String newTitle) {
+        fileText.setText(newTitle);
     }
 
 
     private void changeFontSize(double newFontSize) {
         if (newFontSize < 10 || newFontSize > 40) return;
         textArea.setStyle("-fx-font-size: " + newFontSize);
+    }
+
+    private void showHintText(String text) {
+        hintText.setText(text);
     }
 
 

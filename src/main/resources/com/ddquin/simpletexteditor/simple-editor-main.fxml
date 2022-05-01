@@ -7,11 +7,34 @@
 <?import javafx.scene.control.TextArea?>
 <?import java.net.URL?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddquin.simpletexteditor.SimpleEditorMain" >
-        <MenuBar fx:id="menuBar"   />
+        <MenuBar fx:id="menuBar">
+                <Menu text="File">
+                        <MenuItem text="Open" onAction="#chooseFile" >
+                                <accelerator>
+                                        <KeyCodeCombination alt="UP" code="O" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                                </accelerator>
+                        </MenuItem>
+                        <MenuItem text="Close" onAction="#closeFile">
+                                <accelerator>
+                                        <KeyCodeCombination alt="UP" code="D" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                                </accelerator>
+                        </MenuItem>
+                        <MenuItem text="Save" onAction="#saveFile" >
+                                <accelerator>
+                                        <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                                </accelerator>
+                        </MenuItem>
+                </Menu>
+        </MenuBar>
         <TextArea fx:id="textArea"  VBox.vgrow="ALWAYS" />
-        <HBox fx:id="bottomBar">
-                <Text fx:id="lineCount"></Text>
+        <HBox fx:id="bottomBar" spacing="5">
+                <Text fx:id="lineCount"/>
+                <Text fx:id="hintText" />
+                <Text fx:id="fileText" />
         </HBox>
         <stylesheets>
                 <URL value="@editor.css" />
