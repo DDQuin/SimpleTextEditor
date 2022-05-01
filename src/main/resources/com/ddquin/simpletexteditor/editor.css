@@ -9,3 +9,7 @@
 
 
 /* Bottom Bar */
+
+#fileText {
+    -fx-alignment: center;
+}

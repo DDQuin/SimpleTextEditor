@@ -31,7 +31,7 @@
                 </Menu>
         </MenuBar>
         <TextArea fx:id="textArea"  VBox.vgrow="ALWAYS" />
-        <HBox fx:id="bottomBar" spacing="5">
+        <HBox fx:id="bottomBar" spacing="5" alignment="CENTER_LEFT">
                 <Text fx:id="lineCount"/>
                 <Text fx:id="hintText" />
                 <Text fx:id="fileText" />
