@@ -2,9 +2,7 @@ package com.ddquin.simpletexteditor;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -54,9 +52,12 @@ public class SimpleEditorMain {
 
     @FXML
     public void initialize() {
+        isSaved = true;
         timeToCloseHint = new Timer();
         Platform.runLater(() -> menuBar.getScene().getWindow().setOnCloseRequest(e -> {
+            askToSave();
             if (timeToCloseHint != null) timeToCloseHint.cancel();
+            System.exit(0);
         }));
 
         setUpMenus();
@@ -94,7 +95,7 @@ public class SimpleEditorMain {
         String content;
         try {
             content = Files.readString(fileOpen.toPath(), StandardCharsets.US_ASCII);
-            showHintText("Opened" + fileOpen.getName());
+            showHintText("Opened " + fileOpen.getName());
             setFileOpenText(fileOpen.getName());
             textArea.setText(content);
             isSaved = true;
@@ -108,9 +109,33 @@ public class SimpleEditorMain {
     @FXML
     public void saveFile() {
         if (fileOpen == null) {
-            showHintText("No file open!");
+            FileChooser fileChooser = new FileChooser();
+            File selectedFile = fileChooser.showSaveDialog(null);
+            if (selectedFile != null) {
+                fileOpen = selectedFile;
+                doSave();
+            }
             return;
         }
+        doSave();
+    }
+
+    private void askToSave() {
+        if (isSaved) return;
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("You have unsaved changes.");
+        alert.setContentText("Save?");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(type -> {
+            if (type == ButtonType.YES) {
+                saveFile();
+            } else if (type == ButtonType.NO) {
+
+            }
+        });
+    }
+
+    private void doSave() {
         try (PrintWriter out = new PrintWriter(fileOpen)) {
             out.println(textArea.getText());
             showHintText("Saved " + fileOpen.getName());
@@ -123,11 +148,10 @@ public class SimpleEditorMain {
 
     @FXML
     public void closeFile() {
-        if (fileOpen == null) {
-            showHintText("No file open!");
-            return;
+        askToSave();
+        if (fileOpen != null) {
+            showHintText("Closed " + fileOpen.getName());
         }
-        showHintText("Closed " + fileOpen.getName());
         fileOpen = null;
         setFileOpenText("");
         textArea.setText("");
