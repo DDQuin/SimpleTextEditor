@@ -60,28 +60,26 @@ public class SimpleEditorMain {
             System.exit(0);
         }));
 
-        setUpMenus();
         setUpTextArea();
     }
 
-    private void setUpMenus() {
-    }
 
     private void setUpTextArea() {
         textArea.textProperty().addListener((observable, oldVal, newVal) -> {
             isSaved = false;
             updateBottomBar();
         });
-        textArea.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
-            KeyCombination increaseCombo = new KeyCharacterCombination("=", KeyCombination.SHORTCUT_DOWN);
-            KeyCombination decreaseCombo = new KeyCharacterCombination("-", KeyCombination.SHORTCUT_DOWN);
-            if (increaseCombo.match(keyEvent)) {
-                changeFontSize(textArea.getFont().getSize() + 2);
-            } else if (decreaseCombo.match(keyEvent)) {
-                changeFontSize(textArea.getFont().getSize() - 2);
-            }
-        });
         updateBottomBar();
+    }
+
+    @FXML
+    public void increaseFont() {
+        changeFontSize(textArea.getFont().getSize() + 2);
+    }
+
+    @FXML
+    public void decreaseFont() {
+        changeFontSize(textArea.getFont().getSize() - 2);
     }
 
 

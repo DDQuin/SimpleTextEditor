@@ -11,6 +11,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.SplitPane?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddquin.simpletexteditor.SimpleEditorMain" >
         <MenuBar fx:id="menuBar">
                 <Menu text="File">
@@ -35,8 +36,23 @@
 
                         </CheckMenuItem>
                 </Menu>
+                <Menu text="Edit">
+                        <MenuItem text="Increase Font Size" onAction="#increaseFont" >
+                                <accelerator>
+                                        <KeyCodeCombination alt="UP" code="EQUALS" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                                </accelerator>
+                        </MenuItem>
+                        <MenuItem text="Decrease Font size" onAction="#decreaseFont" >
+                                <accelerator>
+                                        <KeyCodeCombination alt="UP" code="MINUS" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+                                </accelerator>
+                        </MenuItem>
+                </Menu>
         </MenuBar>
-        <TextArea fx:id="textArea"  VBox.vgrow="ALWAYS" />
+        <SplitPane VBox.vgrow="ALWAYS">
+                <TextArea></TextArea>
+        <TextArea fx:id="textArea"   />
+        </SplitPane >
         <HBox fx:id="bottomBar" spacing="5" alignment="CENTER_LEFT">
                 <Text fx:id="lineCount"/>
                 <Text fx:id="hintText" />
