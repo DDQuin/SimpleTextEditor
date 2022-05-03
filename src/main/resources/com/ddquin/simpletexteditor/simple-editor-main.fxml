@@ -12,6 +12,7 @@
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TreeView?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddquin.simpletexteditor.SimpleEditorMain" >
         <MenuBar fx:id="menuBar">
                 <Menu text="File">
@@ -49,8 +50,8 @@
                         </MenuItem>
                 </Menu>
         </MenuBar>
-        <SplitPane VBox.vgrow="ALWAYS">
-                <TextArea></TextArea>
+        <SplitPane VBox.vgrow="ALWAYS" dividerPositions="0.25f, 0.75f">
+                <TreeView fx:id="fileStructure"  />
         <TextArea fx:id="textArea"   />
         </SplitPane >
         <HBox fx:id="bottomBar" spacing="5" alignment="CENTER_LEFT">

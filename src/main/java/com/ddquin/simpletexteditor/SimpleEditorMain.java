@@ -1,11 +1,13 @@
 package com.ddquin.simpletexteditor;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,6 +35,10 @@ public class SimpleEditorMain {
     @FXML
     private CheckMenuItem darkMenu;
 
+
+    //Middle Split Pane
+    @FXML
+    private TreeView<File> fileStructure;
 
     @FXML
     private TextArea textArea;
@@ -59,7 +66,7 @@ public class SimpleEditorMain {
             if (timeToCloseHint != null) timeToCloseHint.cancel();
             System.exit(0);
         }));
-
+        setUpFileStructure(new File("/Users/mariolink"));
         setUpTextArea();
     }
 
@@ -71,6 +78,24 @@ public class SimpleEditorMain {
         });
         updateBottomBar();
     }
+
+    private void setUpFileStructure(File root) {
+        TreeItem<File> rootFile = new TreeItem<>(root);
+        for (File file: Objects.requireNonNull(root.listFiles())) {
+            TreeItem<File> fileItem = new TreeItem<>(file);
+            rootFile.getChildren().add(fileItem);
+        }
+        fileStructure.setRoot(rootFile);
+        fileStructure.setOnMouseClicked(mouseEvent -> {
+            if(mouseEvent.getClickCount() == 2) {
+                TreeItem<File> item = fileStructure.getSelectionModel().getSelectedItem();
+                askToSave();
+                openFile(item.getValue());
+
+            }
+        });
+    }
+
 
     @FXML
     public void increaseFont() {
@@ -87,9 +112,16 @@ public class SimpleEditorMain {
     @FXML
     public void chooseFile()  {
         FileChooser fileChooser = new FileChooser();
-        fileOpen = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
+        askToSave();
+        openFile(fileChooser.showOpenDialog(menuBar.getScene().getWindow()));
         // if no file chosen (user quit dialog)
-        if (fileOpen == null) return;
+
+
+    }
+
+    private void openFile(File fileToOpen) {
+        if (fileToOpen == null) return;
+        fileOpen = fileToOpen;
         String content;
         try {
             content = Files.readString(fileOpen.toPath(), StandardCharsets.US_ASCII);
@@ -101,7 +133,6 @@ public class SimpleEditorMain {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @FXML
