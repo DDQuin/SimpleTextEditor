@@ -56,7 +56,6 @@ public class SimpleEditorMain {
 
     private Timer timeToCloseHint;
 
-
     @FXML
     public void initialize() {
         isSaved = true;
