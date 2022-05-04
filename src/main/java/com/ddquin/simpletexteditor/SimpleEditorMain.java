@@ -39,7 +39,7 @@ public class SimpleEditorMain {
 
     //Middle Split Pane
     @FXML
-    private TreeView<File> fileStructure;
+    private TreeView<TreeFile> fileStructure;
 
     @FXML
     private TextArea textArea;
@@ -80,28 +80,24 @@ public class SimpleEditorMain {
     }
 
     private void setUpFileStructure(File root) {
-        TreeItem<File> rootFile = new TreeItem<>(root);
-        /*for (File file: Objects.requireNonNull(root.listFiles())) {
-            TreeItem<File> fileItem = new TreeItem<>(file);
-
-            rootFile.getChildren().add(fileItem);
-        }*/
+        TreeItem<TreeFile> rootFile = new TreeItem<>(new TreeFile(root));
         addFiles(rootFile);
         fileStructure.setRoot(rootFile);
         fileStructure.setOnMouseClicked(mouseEvent -> {
             if(mouseEvent.getClickCount() == 2) {
-                TreeItem<File> item = fileStructure.getSelectionModel().getSelectedItem();
+                TreeItem<TreeFile> item = fileStructure.getSelectionModel().getSelectedItem();
+                if (item.getValue().getFile().isDirectory()) return;
                 askToSave();
-                openFile(item.getValue());
+                openFile(item.getValue().getFile());
 
             }
         });
     }
 
-    private void addFiles(TreeItem<File> root) {
-        if (root.getValue().isFile()) return;
-        for (File file: root.getValue().listFiles()) {
-            TreeItem<File> fileItem = new TreeItem<>(file);
+    private void addFiles(TreeItem<TreeFile> root) {
+        if (root.getValue().getFile().isFile()) return;
+        for (File file: root.getValue().getFile().listFiles()) {
+            TreeItem<TreeFile> fileItem = new TreeItem<>(new TreeFile(file));
             if (file.isDirectory()) {
                 addFiles(fileItem);
             }
