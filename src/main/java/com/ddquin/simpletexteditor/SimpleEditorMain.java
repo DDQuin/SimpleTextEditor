@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
@@ -19,6 +21,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -81,6 +84,8 @@ public class SimpleEditorMain {
 
     private void setUpFileStructure(File root) {
         TreeItem<TreeFile> rootFile = new TreeItem<>(new TreeFile(root));
+        Image dirImage = new Image(getClass().getResourceAsStream("filedir.png"));
+        rootFile.setGraphic(new ImageView(dirImage));
         addFiles(rootFile);
         fileStructure.setRoot(rootFile);
         fileStructure.setOnMouseClicked(mouseEvent -> {
@@ -98,8 +103,14 @@ public class SimpleEditorMain {
         if (root.getValue().getFile().isFile()) return;
         for (File file: root.getValue().getFile().listFiles()) {
             TreeItem<TreeFile> fileItem = new TreeItem<>(new TreeFile(file));
+
             if (file.isDirectory()) {
+                Image dirImage = new Image(getClass().getResourceAsStream("filedir.png"));
+                fileItem.setGraphic(new ImageView(dirImage));
                 addFiles(fileItem);
+            } else {
+                Image fileImage = new Image(getClass().getResourceAsStream("filetext.png"));
+               fileItem.setGraphic(new ImageView(fileImage));
             }
             root.getChildren().add(fileItem);
         }
