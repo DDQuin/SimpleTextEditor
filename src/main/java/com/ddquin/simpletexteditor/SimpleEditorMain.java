@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -65,7 +66,7 @@ public class SimpleEditorMain {
             if (timeToCloseHint != null) timeToCloseHint.cancel();
             System.exit(0);
         }));
-        setUpFileStructure(new File("/Users/mariolink"));
+        //setUpFileStructure(new File("/Users/mariolink/Documents/JavaScript stuff/other-site"));
         setUpTextArea();
     }
 
@@ -80,10 +81,12 @@ public class SimpleEditorMain {
 
     private void setUpFileStructure(File root) {
         TreeItem<File> rootFile = new TreeItem<>(root);
-        for (File file: Objects.requireNonNull(root.listFiles())) {
+        /*for (File file: Objects.requireNonNull(root.listFiles())) {
             TreeItem<File> fileItem = new TreeItem<>(file);
+
             rootFile.getChildren().add(fileItem);
-        }
+        }*/
+        addFiles(rootFile);
         fileStructure.setRoot(rootFile);
         fileStructure.setOnMouseClicked(mouseEvent -> {
             if(mouseEvent.getClickCount() == 2) {
@@ -93,6 +96,17 @@ public class SimpleEditorMain {
 
             }
         });
+    }
+
+    private void addFiles(TreeItem<File> root) {
+        if (root.getValue().isFile()) return;
+        for (File file: root.getValue().listFiles()) {
+            TreeItem<File> fileItem = new TreeItem<>(file);
+            if (file.isDirectory()) {
+                addFiles(fileItem);
+            }
+            root.getChildren().add(fileItem);
+        }
     }
 
 
@@ -146,6 +160,13 @@ public class SimpleEditorMain {
             return;
         }
         doSave();
+    }
+
+    @FXML
+    public void chooseWorkspace() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File workspace = directoryChooser.showDialog(menuBar.getScene().getWindow());
+        if (workspace != null) setUpFileStructure(workspace);
     }
 
     private void askToSave() {
