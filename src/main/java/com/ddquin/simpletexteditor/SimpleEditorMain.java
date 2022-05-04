@@ -10,9 +10,13 @@ import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -216,9 +220,9 @@ public class SimpleEditorMain {
     @FXML
     public void setDarkMode() {
         if (darkMenu.isSelected()) {
-            menuBar.getScene().getStylesheets().add("dark-mode.css");
+            menuBar.getScene().getStylesheets().add(getClass().getResource("dark-mode.css").toExternalForm());
         } else {
-            menuBar.getScene().getStylesheets().remove("dark-mode.css");
+            menuBar.getScene().getStylesheets().remove(getClass().getResource("dark-mode.css").toExternalForm());
         }
     }
 
