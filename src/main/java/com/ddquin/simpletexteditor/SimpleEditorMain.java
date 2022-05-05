@@ -54,13 +54,13 @@ public class SimpleEditorMain {
     // Bottom Bar
 
     @FXML
-    private Text lineCount;
+    private Label lineCount;
 
     @FXML
-    private Text hintText;
+    private Label hintText;
 
     @FXML
-    private Text fileText;
+    private Label fileText;
 
     private Timer timeToCloseHint;
 

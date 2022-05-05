@@ -13,6 +13,7 @@
 <?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.control.Label?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddquin.simpletexteditor.SimpleEditorMain" >
         <MenuBar fx:id="menuBar">
                 <Menu text="File">
@@ -60,9 +61,9 @@
         <TextArea fx:id="textArea"   />
         </SplitPane >
         <HBox fx:id="bottomBar" spacing="5" alignment="CENTER_LEFT">
-                <Text fx:id="lineCount"/>
-                <Text fx:id="hintText" />
-                <Text fx:id="fileText" />
+                <Label fx:id="lineCount"/>
+                <Label fx:id="hintText" />
+                <Label fx:id="fileText" />
         </HBox>
         <stylesheets>
                 <URL value="@editor.css" />
