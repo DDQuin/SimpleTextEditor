@@ -145,16 +145,20 @@ public class SimpleEditorMain {
 
     private void openFile(File fileToOpen) {
         if (fileToOpen == null) return;
-        fileOpen = fileToOpen;
         String content;
         try {
-            content = Files.readString(fileOpen.toPath(), StandardCharsets.US_ASCII);
+            content = Files.readString(fileToOpen.toPath(), StandardCharsets.US_ASCII);
+            fileOpen = fileToOpen;
             showHintText("Opened " + fileOpen.getName());
             setFileOpenText(fileOpen.getName());
             textArea.setText(content);
             isSaved = true;
             updateBottomBar();
         } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Problem loading file");
+            alert.setContentText("There was a problem loading the file, most likely not in txt format");
+            alert.showAndWait();
             throw new RuntimeException(e);
         }
     }
