@@ -1,22 +1,12 @@
 package com.ddquin.simpletexteditor;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCharacterCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,15 +15,12 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Objects;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class SimpleEditorMain {
 
     private File fileOpen;
-    private double screenWidth;
-    private double screenHeight;
     private boolean isSaved;
 
     //Menu
@@ -73,7 +60,6 @@ public class SimpleEditorMain {
             if (timeToCloseHint != null) timeToCloseHint.cancel();
             System.exit(0);
         }));
-        //setUpFileStructure(new File("/Users/mariolink/Documents/JavaScript stuff/other-site"));
         setUpTextArea();
         setUpMenuBar();
     }
@@ -91,9 +77,14 @@ public class SimpleEditorMain {
         menuBar.setUseSystemMenuBar(true);
     }
 
+    private String getURLResource(String url) {
+        return Objects.requireNonNull(getClass().getResource(url)).toExternalForm();
+    }
+
+    //Menu Actions
     private void setUpFileStructure(File root) {
         TreeItem<TreeFile> rootFile = new TreeItem<>(new TreeFile(root));
-        Image dirImage = new Image(getClass().getResourceAsStream("filedir.png"));
+        Image dirImage = new Image(getURLResource("filedir.png"));
         rootFile.setGraphic(new ImageView(dirImage));
         addFiles(rootFile);
         fileStructure.setRoot(rootFile);
@@ -110,15 +101,15 @@ public class SimpleEditorMain {
 
     private void addFiles(TreeItem<TreeFile> root) {
         if (root.getValue().getFile().isFile()) return;
-        for (File file: root.getValue().getFile().listFiles()) {
+        for (File file: Objects.requireNonNull(root.getValue().getFile().listFiles())) {
             TreeItem<TreeFile> fileItem = new TreeItem<>(new TreeFile(file));
 
             if (file.isDirectory()) {
-                Image dirImage = new Image(getClass().getResourceAsStream("filedir.png"));
+                Image dirImage = new Image(getURLResource("filedir.png"));
                 fileItem.setGraphic(new ImageView(dirImage));
                 addFiles(fileItem);
             } else {
-                Image fileImage = new Image(getClass().getResourceAsStream("filetext.png"));
+                Image fileImage = new Image(getURLResource("filetext.png"));
                fileItem.setGraphic(new ImageView(fileImage));
             }
             root.getChildren().add(fileItem);
@@ -163,8 +154,8 @@ public class SimpleEditorMain {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Problem loading file");
             alert.setContentText("There was a problem loading the file, most likely not in txt format");
-            alert.getDialogPane().getStylesheets().add(getClass().getResource("editor.css").toExternalForm());
-            if (darkMenu.isSelected()) alert.getDialogPane().getStylesheets().add(getClass().getResource("dark-mode.css").toExternalForm());
+            alert.getDialogPane().getStylesheets().add(getURLResource("editor.css"));
+            if (darkMenu.isSelected()) alert.getDialogPane().getStylesheets().add(getURLResource("dark-mode.css"));
             alert.showAndWait();
             throw new RuntimeException(e);
         }
@@ -197,13 +188,11 @@ public class SimpleEditorMain {
         alert.setTitle("You have unsaved changes.");
         alert.setContentText("Save?");
         alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("editor.css").toExternalForm());
-        if (darkMenu.isSelected()) alert.getDialogPane().getStylesheets().add(getClass().getResource("dark-mode.css").toExternalForm());
+        alert.getDialogPane().getStylesheets().add(getURLResource("editor.css"));
+        if (darkMenu.isSelected()) alert.getDialogPane().getStylesheets().add(getURLResource("dark-mode.css"));
         alert.showAndWait().ifPresent(type -> {
             if (type == ButtonType.YES) {
                 saveFile();
-            } else if (type == ButtonType.NO) {
-
             }
         });
     }
@@ -233,9 +222,9 @@ public class SimpleEditorMain {
     @FXML
     public void setDarkMode() {
         if (darkMenu.isSelected()) {
-            menuBar.getScene().getStylesheets().add(getClass().getResource("dark-mode.css").toExternalForm());
+            menuBar.getScene().getStylesheets().add(getURLResource("dark-mode.css"));
         } else {
-            menuBar.getScene().getStylesheets().remove(getClass().getResource("dark-mode.css").toExternalForm());
+            menuBar.getScene().getStylesheets().remove(getURLResource("dark-mode.css"));
         }
     }
 
