@@ -14,6 +14,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddquin.simpletexteditor.SimpleEditorMain" >
         <MenuBar fx:id="menuBar">
                 <Menu text="File">
@@ -58,7 +59,17 @@
         </MenuBar>
         <SplitPane VBox.vgrow="ALWAYS" dividerPositions="0.25f, 0.75f">
                 <TreeView fx:id="fileStructure"  />
-        <TextArea fx:id="textArea"   />
+                <ScrollPane fx:id="textWholeScroll">
+                        <HBox fx:id="textWhole">
+                                <VBox fx:id="textLines" prefWidth="50"  VBox.vgrow="NEVER" >
+
+                                </VBox>
+                                <TextArea fx:id="textArea" HBox.hgrow="ALWAYS"    />
+                        </HBox>
+
+                </ScrollPane>
+
+
         </SplitPane >
         <HBox fx:id="bottomBar" spacing="5" alignment="CENTER_LEFT">
                 <Label fx:id="lineCount"/>

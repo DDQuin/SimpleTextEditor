@@ -3,8 +3,10 @@ package com.ddquin.simpletexteditor;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -38,6 +40,9 @@ public class SimpleEditorMain {
     @FXML
     private TextArea textArea;
 
+    @FXML
+    private VBox textLines;
+
     // Bottom Bar
 
     @FXML
@@ -68,6 +73,7 @@ public class SimpleEditorMain {
     private void setUpTextArea() {
         textArea.textProperty().addListener((observable, oldVal, newVal) -> {
             isSaved = false;
+            updateLines();
             updateBottomBar();
         });
         updateBottomBar();
@@ -226,6 +232,16 @@ public class SimpleEditorMain {
         } else {
             menuBar.getScene().getStylesheets().remove(getURLResource("dark-mode.css"));
         }
+    }
+
+    private void updateLines() {
+        //textLines.setSpacing(0.4);
+        textLines.getChildren().clear();
+        for (int line = 0; line < textArea.getText().lines().count(); line++) {
+            Label lineNum = new Label(line + 1 + "");
+            textLines.getChildren().add(lineNum);
+        }
+       // textLines.setPrefHeight(textArea.getPrefHeight());
     }
 
     private void updateBottomBar() {
