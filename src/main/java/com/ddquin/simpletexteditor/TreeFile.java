@@ -1,18 +1,14 @@
 package com.ddquin.simpletexteditor;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.io.File;
 
+@AllArgsConstructor
 public class TreeFile {
 
-    private File file;
-
-    public TreeFile(File file) {
-        this.file = file;
-    }
-
-    public File getFile() {
-        return file;
-    }
+    private @Getter File file;
 
     @Override
     public String toString() {
