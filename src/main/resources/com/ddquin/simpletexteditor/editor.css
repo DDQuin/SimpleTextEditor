@@ -13,3 +13,24 @@
 #fileText {
     -fx-alignment: center;
 }
+
+
+/* scroll bar */
+.corner {
+    -fx-background-color: transparent ;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb{
+    -fx-background-color: #c4c3c3;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-background-color: #c5c5c5;
+    -fx-padding: 0 0.15em 0 0.15em;
+}
+
+

@@ -75,6 +75,7 @@ public class SimpleEditorMain {
         }));
         //setUpFileStructure(new File("/Users/mariolink/Documents/JavaScript stuff/other-site"));
         setUpTextArea();
+        setUpMenuBar();
     }
 
 
@@ -84,6 +85,10 @@ public class SimpleEditorMain {
             updateBottomBar();
         });
         updateBottomBar();
+    }
+
+    private void setUpMenuBar() {
+        menuBar.setUseSystemMenuBar(true);
     }
 
     private void setUpFileStructure(File root) {
@@ -255,7 +260,7 @@ public class SimpleEditorMain {
         TimerTask closeHint = new TimerTask() {
             @Override
             public void run() {
-                hintText.setText("");
+                Platform.runLater(() -> hintText.setText(""));
             }
         };
         timeToCloseHint.schedule(closeHint, 3000);
