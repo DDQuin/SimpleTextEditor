@@ -68,3 +68,34 @@
     -fx-text-fill: white;
 
 }
+
+/* dialog */
+
+.dialog-pane  {
+    -fx-background-color: #545454;
+}
+
+.dialog-pane *.header-panel  {
+    -fx-background-color: #545454;
+
+}
+
+.dialog-pane .button  {
+    -fx-text-fill: white;
+    -fx-background-color: #707070;
+}
+
+.dialog-pane .button:hover  {
+    -fx-background-color: #504f4f;
+}
+
+.dialog-pane .button:armed  {
+    -fx-background-color: #333232;
+}
+
+
+.dialog-pane .label {
+    -fx-text-fill: white;
+}
+
+

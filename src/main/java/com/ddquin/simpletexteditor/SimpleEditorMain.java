@@ -163,6 +163,8 @@ public class SimpleEditorMain {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Problem loading file");
             alert.setContentText("There was a problem loading the file, most likely not in txt format");
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("editor.css").toExternalForm());
+            if (darkMenu.isSelected()) alert.getDialogPane().getStylesheets().add(getClass().getResource("dark-mode.css").toExternalForm());
             alert.showAndWait();
             throw new RuntimeException(e);
         }
@@ -195,6 +197,8 @@ public class SimpleEditorMain {
         alert.setTitle("You have unsaved changes.");
         alert.setContentText("Save?");
         alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("editor.css").toExternalForm());
+        if (darkMenu.isSelected()) alert.getDialogPane().getStylesheets().add(getClass().getResource("dark-mode.css").toExternalForm());
         alert.showAndWait().ifPresent(type -> {
             if (type == ButtonType.YES) {
                 saveFile();
