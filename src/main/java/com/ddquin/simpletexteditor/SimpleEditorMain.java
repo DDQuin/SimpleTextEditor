@@ -1,13 +1,11 @@
 package com.ddquin.simpletexteditor;
 
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -42,6 +40,8 @@ public class SimpleEditorMain {
     @FXML
     private TextArea textArea;
 
+    private double fontSize;
+
     @FXML
     private VBox textLines;
 
@@ -60,6 +60,7 @@ public class SimpleEditorMain {
 
     @FXML
     public void initialize() {
+        fontSize = 12;
         isSaved = true;
         timeToCloseHint = new Timer();
         Platform.runLater(() -> menuBar.getScene().getWindow().setOnCloseRequest(e -> {
@@ -75,14 +76,12 @@ public class SimpleEditorMain {
     private void setUpTextArea() {
         textArea.textProperty().addListener((observable, oldVal, newVal) -> {
             isSaved = false;
-            updateLines();
+            updateLines(fontSize);
             updateBottomBar();
         });
 
 
-        textArea.scrollTopProperty().addListener((observable, oldVal, newVal) -> {
-           textArea.setScrollTop(0);
-        });
+        textArea.scrollTopProperty().addListener((observable, oldVal, newVal) -> textArea.setScrollTop(0));
         updateBottomBar();
     }
 
@@ -132,12 +131,16 @@ public class SimpleEditorMain {
 
     @FXML
     public void increaseFont() {
-        changeFontSize(textArea.getFont().getSize() + 2);
+        fontSize = fontSize + 2;
+        changeFontSize(textArea, fontSize);
+        updateLines(fontSize);
     }
 
     @FXML
     public void decreaseFont() {
-        changeFontSize(textArea.getFont().getSize() - 2);
+        fontSize = fontSize - 2;
+        changeFontSize(textArea, fontSize);
+        updateLines(fontSize);
     }
 
 
@@ -241,12 +244,17 @@ public class SimpleEditorMain {
         }
     }
 
-    private void updateLines() {
-        //textLines.setSpacing(0.4);
+    private void updateLines(double newFont) {
+        System.out.println(newFont);
+        textLines.setSpacing(0);
+        double newY = 4 + (newFont - 12)/3.8;
+       // textLines.setTranslateY(newY);
         textLines.getChildren().clear();
         for (int line = 0; line < textArea.getText().lines().count(); line++) {
             Label lineNum = new Label(line + 1 + "");
+            lineNum.setTranslateY(newY);
             textLines.getChildren().add(lineNum);
+           changeFontSize(lineNum, newFont);
         }
        // textLines.setPrefHeight(textArea.getPrefHeight());
     }
@@ -266,9 +274,14 @@ public class SimpleEditorMain {
     }
 
 
-    private void changeFontSize(double newFontSize) {
-        if (newFontSize < 10 || newFontSize > 40) return;
-        textArea.setStyle("-fx-font-size: " + newFontSize);
+    private void changeFontSize(Node n, double newFontSize) {
+        if (newFontSize < 10) {
+            n.setStyle("-fx-font-size: " + 10);
+        } else if (newFontSize > 40) {
+            n.setStyle("-fx-font-size: " + 40);
+        } else {
+            n.setStyle("-fx-font-size: " + newFontSize);
+        }
     }
 
     private void showHintText(String text) {
