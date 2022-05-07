@@ -5,6 +5,20 @@
     -fx-font-family: "Roboto Light";
 }
 
+#textArea .scroll-pane {
+    -fx-vbar-policy: never;
+}
+
+
+
+#textWhole {
+
+}
+
+#textWholeScroll {
+
+}
+
 /* Menu Bar */
 
 

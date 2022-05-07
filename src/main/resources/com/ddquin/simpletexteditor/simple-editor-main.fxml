@@ -59,12 +59,12 @@
         </MenuBar>
         <SplitPane VBox.vgrow="ALWAYS" dividerPositions="0.25f, 0.75f">
                 <TreeView fx:id="fileStructure"  />
-                <ScrollPane fx:id="textWholeScroll">
-                        <HBox fx:id="textWhole">
+                <ScrollPane fx:id="textWholeScroll" fitToHeight="true" fitToWidth="true">
+                        <HBox fx:id="textWhole"  >
                                 <VBox fx:id="textLines" prefWidth="50"  VBox.vgrow="NEVER" >
 
                                 </VBox>
-                                <TextArea fx:id="textArea" HBox.hgrow="ALWAYS"    />
+                                <TextArea fx:id="textArea" HBox.hgrow="ALWAYS"   />
                         </HBox>
 
                 </ScrollPane>

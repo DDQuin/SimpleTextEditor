@@ -1,11 +1,13 @@
 package com.ddquin.simpletexteditor;
 
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -75,6 +77,11 @@ public class SimpleEditorMain {
             isSaved = false;
             updateLines();
             updateBottomBar();
+        });
+
+
+        textArea.scrollTopProperty().addListener((observable, oldVal, newVal) -> {
+           textArea.setScrollTop(0);
         });
         updateBottomBar();
     }

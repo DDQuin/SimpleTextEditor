@@ -17,6 +17,13 @@
     -fx-background-color: #676767;
 }
 
+#textLines {
+    -fx-background-color: #676767;
+}
+
+#textLines .label{
+    -fx-text-fill: white;
+}
 
 
 
@@ -56,8 +63,9 @@
     -fx-background-color: #545454;
 }
 
-.split-pane > .split-pane-divider {
-    -fx-background-color: #464545;
+.split-pane  .split-pane-divider {
+    /*-fx-background-color: #464545;*/
+    -fx-background-color: black;
 }
 
 #bottomBar {
